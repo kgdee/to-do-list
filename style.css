@@ -28,6 +28,11 @@ button {
   padding: 5px;
 }
 
+input[type=text],
+input[type=number] {
+  padding: 5px;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -48,6 +53,12 @@ body {
   display: none !important;
 }
 
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .container {
   max-width: 1440px;
   margin: auto;
@@ -57,7 +68,6 @@ body {
   width: 100%;
   height: 550px;
   display: flex;
-  justify-content: center;
   gap: 10px;
   padding: 5px;
 }
@@ -80,7 +90,6 @@ body {
   height: 200%;
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
   overflow: hidden;
 }
 
@@ -114,15 +123,17 @@ body {
   min-height: 21px;
 }
 
-.timemap .scroll-btn {
+.timemap .scroll-btns {
   position: absolute;
   bottom: 0;
   right: 0;
+  display: flex;
+  gap: 5px;
 }
 
 .sessions-container {
   position: relative;
-  width: 125px;
+  width: 150px;
   height: 100%;
 }
 
@@ -140,8 +151,24 @@ body {
   background-color: var(--primary-color);
   color: white;
   border: 1px solid var(--background-color);
-  border-radius: 5px;
   padding: 5px 0 0 5px;
+}
+
+.sessions .session .header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sessions .session .icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+}
+
+.sessions .session .title {
+  flex: 1;
 }
 
 .sessions .session .actions {
@@ -172,7 +199,7 @@ body {
 
 
 .task-book {
-  min-width: 300px;
+  width: 300px;
   background-color: white;
   padding: 5px;
   display: flex;
@@ -183,6 +210,15 @@ body {
 .task-book .header {
   padding: 5px;
   border-bottom: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.task-book .header img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
 }
 
 .task-book .add-task {
@@ -221,4 +257,63 @@ body {
 .task-book .tasks .task .actions {
   display: flex;
   gap: 10px;
+}
+
+
+.add-session-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-session-modal .modal-content {
+  position: relative;
+}
+
+.add-session-modal .modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.add-session-form {
+  width: 300px;
+  min-height: 250px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.add-session-form .title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.add-session-form > label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-session-form input[type=text],
+.add-session-form input[type=number] {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.add-session-form > label > i {
+  font-size: 1.5rem;
+}
+
+.add-session-form button[type=submit] {
+  margin-top: auto;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
 }

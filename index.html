@@ -29,57 +29,41 @@
         </div>
       </div>
       <div class="time-list"></div>
-      <button class="scroll-btn" onclick="scrollTimeList()"><i class="bi bi-chevron-down"></i></button>
+      <div class="scroll-btns">
+        <button class="scroll-btn" onclick="scrollTimeList(1)"><i class="bi bi-chevron-up"></i></button>
+        <button class="scroll-btn" onclick="scrollTimeList(-1)"><i class="bi bi-chevron-down"></i></button>
+      </div>
     </div>
 
     <div class="sessions-container">
       <div class="sessions"></div>
-      <button class="add-btn" onclick="addSession('','Test',6)"><i class="bi bi-plus"></i></button>
+      <button class="add-btn" onclick="openAddSessionModal()"><i class="bi bi-plus"></i> Session</button>
     </div>
 
-    <div class="task-book">
-      <div class="header">
-        <i class="bi bi-moon-stars-fill"></i>
-        Midnight To Do
+    <div class="task-book"></div>
+
+
+    <div class="add-session-modal hidden" onclick="openAddSessionModal()">
+      <div class="modal-content" onclick="stopPropagation(event)">
+        <form class="add-session-form">
+          <div class="title">Add new session</div>
+          <label class="file-input">
+            Icon
+            <i class="bi bi-image"></i>
+            <input type="file" name="file" class="hidden">
+          </label>
+          <label>
+            Title
+            <input type="text" name="title" value="New Session">
+          </label>
+          <label>
+            Duration
+            <input type="number" name="duration" value="6">
+          </label>
+          <button type="submit">Add</button>
+        </form>
+        <button class="close" onclick="openAddSessionModal()"><i class="bi bi-x"></i></button>
       </div>
-
-      <div class="add-task">
-        <input type="text" placeholder="Add new task">
-        <button>Add</button>
-      </div>
-
-      <div class="tasks">        
-        <label class="task">
-          Do something
-          <div class="actions">
-            <input type="checkbox">
-            <button>
-              <i class="bi bi-x"></i>
-            </button>
-          </div>
-        </label>
-
-        <div class="task">
-          Do something
-          <div class="actions">
-            <input type="checkbox">
-            <button>
-              <i class="bi bi-x"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="task">
-          Do something
-          <div class="actions">
-            <input type="checkbox">
-            <button>
-              <i class="bi bi-x"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </body>
