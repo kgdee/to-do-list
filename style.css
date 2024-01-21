@@ -198,7 +198,7 @@ body {
 }
 
 
-.task-book {
+.task-panel {
   width: 300px;
   background-color: white;
   padding: 5px;
@@ -207,7 +207,7 @@ body {
   gap: 10px;
 }
 
-.task-book .header {
+.task-panel .header {
   padding: 5px;
   border-bottom: 1px solid #ccc;
   display: flex;
@@ -215,48 +215,48 @@ body {
   gap: 5px;
 }
 
-.task-book .header img {
+.task-panel .header img {
   width: 25px;
   height: 25px;
   object-fit: contain;
 }
 
-.task-book .add-task {
+.task-panel .add-task {
   display: flex;
   background-color: #eee;
   border-radius: 25px;
   overflow: hidden;
 }
 
-.task-book .add-task input {
+.task-panel .add-task input {
   flex: 1;
   background-color: transparent;
   padding: 0 15px;
 }
 
-.task-book .add-task button {
+.task-panel .add-task button {
   background-color: var(--primary-color);
   color: white;
   border-radius: 25px;
   padding: 10px 20px;
 }
 
-.task-book .tasks {
+.task-panel .tasks {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.task-book .tasks .task {
+.task-panel .tasks .task {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #ccc;
 }
 
-.task-book .tasks .task .actions {
+.task-panel .tasks .task .actions {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 

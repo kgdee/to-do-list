@@ -61,7 +61,7 @@ function updateSessionsEl() {
   sessionsEl.innerHTML = ""
   sessions.forEach((item) => {
     sessionsEl.innerHTML += `
-    <div class="session" style="height: calc(21px * ${item.duration});" onclick="selectTaskBook('${item.taskBookId}')">
+    <div class="session" style="height: calc(21px * ${item.duration});" onclick="selectTaskPanel('${item.taskPanelId}')">
       <div class="header">
         ${item.icon ? `<img src="${item.icon}" class="icon" />` : ""}
         <p class="title text-truncate">${item.title}</p>
@@ -78,7 +78,7 @@ function updateSessionsEl() {
 
 function addSession(icon, title, duration) {
   const id = crypto.randomUUID()
-  const taskBookId = crypto.randomUUID()
+  const taskPanelId = crypto.randomUUID()
 
   if (totalSessionDuration() + duration > 24) {
     const remainingDuration = 24 - totalSessionDuration()
@@ -86,11 +86,11 @@ function addSession(icon, title, duration) {
     else return
   }
   
-  sessions.push({id, taskBookId, icon, title, duration})
+  sessions.push({id, taskPanelId: taskPanelId, icon, title, duration})
   updateSessionsEl()
   saveSessions()
 
-  createTaskBook(taskBookId, icon, title)
+  createTaskPanel(taskPanelId, icon, title)
 }
 
 function addSessionDuration(id, amount) {
@@ -106,8 +106,8 @@ function addSessionDuration(id, amount) {
 }
 
 function deleteSession(id) {
-  const taskBookId = sessions.find(item => item.id === id).taskBookId
-  deleteTaskBook(taskBookId)
+  const taskPanelId = sessions.find(item => item.id === id).taskPanelId
+  deleteTaskPanel(taskPanelId)
 
   const sessionIndex = sessions.findIndex(session => session.id === id)
   sessions.splice(sessionIndex, 1)
@@ -170,53 +170,54 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-let taskBooks = JSON.parse(localStorage.getItem(storagePrefix + "taskBooks")) || []
+let taskPanels = JSON.parse(localStorage.getItem(storagePrefix + "taskPanels")) || []
 
-let selectedTaskBook = 0
+let selectedTaskPanel = 0
 
-const taskBookEl = document.querySelector(".task-book")
+const taskPanelEl = document.querySelector(".task-panel")
 
+let taskToDelete = null
 
-function createTaskBook(id, icon, title) {
-  const newTaskBook = {
+function createTaskPanel(id, icon, title) {
+  const newTaskPanel = {
     id: id,
     icon: icon,
     title: title,
     tasks: []
   }
 
-  taskBooks.push(newTaskBook)
+  taskPanels.push(newTaskPanel)
 
-  saveTaskBooks()
+  saveTaskPanels()
 
-  selectTaskBook(id)
+  selectTaskPanel(id)
 }
 
-function deleteTaskBook(id) {
-  taskBooks.splice(taskBooks.findIndex(item => item.id === id), 1)
+function deleteTaskPanel(id) {
+  taskPanels.splice(taskPanels.findIndex(item => item.id === id), 1)
 
-  updateTaskBookEl()
+  updateTaskPanelEl()
 
-  saveTaskBooks()
+  saveTaskPanels()
 }
 
-function saveTaskBooks() {
-  localStorage.setItem(storagePrefix + "taskBooks", JSON.stringify(taskBooks))
+function saveTaskPanels() {
+  localStorage.setItem(storagePrefix + "taskPanels", JSON.stringify(taskPanels))
 }
 
-function updateTaskBookEl() {
-  const taskBook = taskBooks[selectedTaskBook]
-  if (!taskBook) {
-    taskBookEl.innerHTML = ""
-    taskBookEl.classList.add("hidden")
+function updateTaskPanelEl() {
+  const taskPanel = taskPanels[selectedTaskPanel]
+  if (!taskPanel) {
+    taskPanelEl.innerHTML = ""
+    taskPanelEl.classList.add("hidden")
     return
   }
-  taskBookEl.classList.remove("hidden")
+  taskPanelEl.classList.remove("hidden")
 
-  taskBookEl.innerHTML = `
+  taskPanelEl.innerHTML = `
     <div class="header">
-      ${taskBook.icon ? `<img src="${taskBook.icon}">` : ""}
-      <p class="title text-truncate">${taskBook.title}</p>
+      ${taskPanel.icon ? `<img src="${taskPanel.icon}">` : ""}
+      <p class="title text-truncate">${taskPanel.title}</p>
     </div>
 
     <form class="add-task" onsubmit="addTask(event)">
@@ -225,11 +226,14 @@ function updateTaskBookEl() {
     </form>
 
     <div class="tasks">        
-      ${taskBook.tasks.map((task, i) => `
+      ${taskPanel.tasks.map((task, i) => `
         <label class="task"${task.isDone ? " style='text-decoration: line-through;'" : ""}>
           ${task.title}
           <div class="actions">
             <input type="checkbox"${task.isDone ? " checked" : ""} oninput="doneTask('${task.id}')">
+            <button>
+              <i class="bi bi-folder"></i>
+            </button>
             <button onclick="deleteTask('${task.id}')">
               <i class="bi bi-x"></i>
             </button>
@@ -252,38 +256,43 @@ function addTask(event) {
 
   if (!newTask.title) return
   
-  taskBooks[selectedTaskBook].tasks.push(newTask)
+  taskPanels[selectedTaskPanel].tasks.push(newTask)
 
-  updateTaskBookEl()
+  updateTaskPanelEl()
 
-  saveTaskBooks()
+  saveTaskPanels()
 }
 
-function selectTaskBook(id) {
-  selectedTaskBook = taskBooks.findIndex(item => item.id === id)
-  updateTaskBookEl()
+function selectTaskPanel(id) {
+  selectedTaskPanel = taskPanels.findIndex(item => item.id === id)
+  updateTaskPanelEl()
 }
 
 function doneTask(id) {
-  const task = taskBooks[selectedTaskBook].tasks.find(item => item.id === id)
+  const task = taskPanels[selectedTaskPanel].tasks.find(item => item.id === id)
   task.isDone = !task.isDone
 
-  updateTaskBookEl()
-  saveTaskBooks()
+  updateTaskPanelEl()
+  saveTaskPanels()
 }
 
 function deleteTask(id) {
-  const tasks = taskBooks[selectedTaskBook].tasks
+  if (taskToDelete !== id) {
+    taskToDelete = id
+    return
+  }
+
+  const tasks = taskPanels[selectedTaskPanel].tasks
   const taskIndex = tasks.findIndex(item => item.id === id)
 
   tasks.splice(taskIndex, 1)
 
-  updateTaskBookEl()
-  saveTaskBooks()
+  updateTaskPanelEl()
+  saveTaskPanels()
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  updateTaskBookEl()
+  updateTaskPanelEl()
 })
 
 
